@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container py-5">
+  {% for message in messages %}
+    <div class="alert alert-success w-auto" role="alert">
+      {{message}}
+    </div>
+  {% endfor %}
+  <div class="row g-2">
+    <div class="col-6 d-flex align-items-center">
+      <div class="">
+        <h1>Welcome to our Library Management System</h1>
+        <p>A school library management system is used to automate school libraries and manage all the in-house operations of schools. Library Management Software is a powerful and easy-to-use tool that librarians can use to manage library data efficiently. Students can borrow books through a methodical, organized system.</p>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">
+        <img src="{% static "images/home_img.jpg" %}" class="img-fluid" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container py-3">
+  <ul class="nav nav-pills">
+    {% if categories %}
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="{%url 'homepage'%}">All</a>
+    </li>
+    {% endif %}
+    {% for category in categories%}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'category_wise_book' category.id %}">{{category.name}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <h4>Total car found: {{books|length}}</h4>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for book in books%}
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{book.image.url}}" class="card-img-top" alt="{{book.title}}">
+
+        <div class="card-body">
+          <h5 class="card-title">Title: {{book.title}}</h5>
+          <p class="card-text">Price: ${{book.price}}</p>
+          <p class="card-text">Category: {{book.category}}</p>
+          <p class="card-text">{{book.description|truncatewords:10}}</p>
+          <a href="{% url 'book_details' book.id%}" {% if request.user.email %}class="btn btn-primary"{% else %}class="btn btn-primary disabled"{% endif %} >View Details</a>
+          
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}
+
+</div>
